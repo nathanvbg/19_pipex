@@ -6,13 +6,13 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 17:48:35 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/13 12:17:00 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/13 14:28:52 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_pipex(char *s1, char *s2)
 {
 	char	*dest;
 	int		i;
@@ -28,16 +28,15 @@ char	*ft_strjoin(char *s1, char *s2)
 		dest[i] = s1[i];
 		i++;
 	}
-	while (s2[j])// && s2[j] != ':')
+	while (s2[j])
 	{
 		dest[i + j] = s2[j];
 		j++;
 	}
 	dest[i + j] = '\0';
-	//printf("%s\n", dest);
 	return (dest);
 }
-
+/*
 int	ft_strlen(char *str)
 {
 	int	i;
@@ -81,3 +80,4 @@ char	*ft_strdup(char *s1)
 	dst[i] = '\0';
 	return (dst);
 }
+*/

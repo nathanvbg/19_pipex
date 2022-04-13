@@ -1,47 +1,29 @@
-NAME = pipex
+NAME	= pipex
 
-CC = clang
+SRCS	= ${wildcard *.c}
+OBJS	= ${SRCS:.c=.o}
+CC		= gcc
+CFLAGS	= -Wall -Wextra -Werror
+RM		= rm -rf
 
-CFLAGS = -Wall -Wextra -Werror
+all: ${NAME}
 
-HEADER = pipex.h
-
-SRC = pipex.c utils.c
-
-OBJ = $(SRC:c=o)
-
-SRCB = bonus.c utils.c
-
-OBJB = $(SRCB:c=o)
-
-all: $(NAME)
-
-$(NAME): $(OBJ)
-	@echo "\033[0;32m\n\nCompiling pipex..."
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
-	@echo "\n\033[0mDone !"
-
-%.o: %.c
-	@printf "\033[0;33mGenerating pipex objects... %-10.10s\r" $@
-	@${CC} ${CFLAGS} -c $< -o $@
+${NAME}: ${OBJS}
+	@$(MAKE) -C ./libft
+	@${CC} ${OBJS} ${CFLAGS} ./libft/libft.a -o ${NAME}
 
 clean:
-	@echo "\033[0;31m\nDeleting objects..."
-	@rm -f $(OBJ) $(OBJB)
-	@echo "\033[0m"
+	@$(MAKE) -C libft fclean
+	@${RM} ${OBJS}
 
-fclean:
-	@echo "\033[0;31m\nDeleting objects..."
-	@rm -f $(OBJ) $(OBJB)
-	@echo "\nDeleting executable..."
-	@rm -f $(NAME)
-	@echo "\033[0m"
+fclean: clean
+	@${RM} ${NAME}
 
 re: fclean all
 
-bonus: $(OBJB)
-	@echo "\033[0;32m\n\nCompiling pipex (with bonuses)..."
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJB)
-	@echo "\n\033[0mDone !"
+norme:
+	norminette -R CheckForbiddenSourceHeader ${wildcard *.c} ${wildcard *.h} ${wildcard libft/*.c} ${wildcard libft/*.h}
 
-.PHONY: clean fclean re bonus
+bonus: all
+
+.PHONY: clean fclean re all bonus norme
