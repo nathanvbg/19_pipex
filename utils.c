@@ -6,11 +6,17 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 17:48:35 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/13 16:04:32 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/13 17:38:48 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+char	*ft_exit(char *msg)
+{
+	ft_putstr(msg);
+	return (NULL);
+}
 
 char	*ft_strjoin_pipex(char *s1, char *s2)
 {
@@ -35,4 +41,16 @@ char	*ft_strjoin_pipex(char *s1, char *s2)
 	}
 	dest[i + j] = '\0';
 	return (dest);
+}
+
+void	ft_putstr(char *str)
+{
+	int	i;
+
+	i = 0;
+	while(str[i])
+	{
+		write(1, &str[1], 1);
+		i++;
+	}
 }
