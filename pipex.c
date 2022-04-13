@@ -6,19 +6,27 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 14:44:00 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/12 18:34:53 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/13 12:28:22 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*check_access(char *full_path)
+char	*check_access(char *full_path, char *cmd)
 {
 	char	*path;
-	
-	path = ft_strjoin("", full_path);
-	printf("path = |%s\n", path);
-	return (path);
+	int		i;
+
+	i = 0;
+	while (i < ft_strlen(full_path))
+	{
+		path = ft_strjoin(&full_path[i], "/");
+		i += ft_strlen(path);
+		path = ft_strjoin(path, cmd);
+		if (access(path, 0) == 0)
+			return (path);
+	}
+	return (NULL);
 }
 
 char	*ft_getpath(char **env)
@@ -34,9 +42,7 @@ char	*ft_getpath(char **env)
 			path = ft_strdup(env[i]);
 		i++;
 	}
-	printf("%s\n", path);
-	//if (access("/bin/cd", 0) == 0)
-	//	printf("ok\n");
+	//printf("%s\n", path);
 	return (path);
 }
 
@@ -47,7 +53,8 @@ int	ft_process(char **av, char **env)
 	
 	(void)av[0];
 	full_path = ft_getpath(env);
-	path = check_access(&full_path[5]);
+	path = check_access(&full_path[5], av[2]);
+	printf("path = %s\n", path);
 	if (access("/bin/cd", 0) == 0)
 		printf("ok\n");
 	return (1);

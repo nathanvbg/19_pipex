@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 17:48:35 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/12 18:39:54 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/13 12:17:00 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,18 @@ char	*ft_strjoin(char *s1, char *s2)
 	dest = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!dest)
 		return (NULL);
-	while (s1[i])
+	while (s1[i] && s1[i] != ':')
 	{
 		dest[i] = s1[i];
 		i++;
 	}
-	while (s2[j] && s2[j] != ':')
+	while (s2[j])// && s2[j] != ':')
 	{
 		dest[i + j] = s2[j];
 		j++;
 	}
 	dest[i + j] = '\0';
+	//printf("%s\n", dest);
 	return (dest);
 }
 
