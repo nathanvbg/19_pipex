@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 14:44:00 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/13 14:30:48 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/13 15:22:47 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,15 @@ int	ft_process(char **av, char **env)
 {
 	char	*full_path;
 	char	*path;
+	char 	**arr;
 	
 	(void)av[0];
 	full_path = ft_getpath(env);
-	path = check_access(&full_path[5], av[2]);
+	arr = ft_split(av[2], ' ');
+	path = check_access(&full_path[5], arr[0]);
 	printf("path = %s\n", path);
-	char* 	arr[] = {path, NULL};
+	//char* 	arr[] = {path, NULL};
+	//printf("1 = %s\n2 = %s\n", arr[0], arr[1]);
 	execve(path, arr, env);
 
 	return (1);
@@ -75,6 +78,5 @@ int	main(int ac, char **av, char **env)
 	dup2(fd_in, 0);
 	close(fd_in);
 	ft_process(av, env);
-	ft_atoi("42");
 	return (0);
 }
