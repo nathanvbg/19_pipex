@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 14:44:00 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/13 16:30:17 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/13 16:59:50 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,11 @@ int	main(int ac, char **av, char **env)
 	int fd[2];
 	int pid1;
 	int pid2;
-
+	
 	printf("\n\n");
 	ac = 4;
 	if (pipe(fd) == -1)
 		return (-1);
-	//fd_out = open(av[4], O_WRONLY);
 	pid1 = fork();
 	if (pid1 < 0)
 		return (-1);
@@ -89,12 +88,13 @@ int	main(int ac, char **av, char **env)
 		return (-1);
 	if (pid2 == 0)
 	{
-
 		dup2(fd[0], STDIN_FILENO);
-		//fd[1] = open(av[4], O_WRONLY);
-		//dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
+		int	fd_out = open(av[4], O_WRONLY);
+		//printf("fd_out = %d\nav[4] = %s\n", fd_out, av[4]);
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
 		ft_process(av, env, 3);
 	}
 	close(fd[0]);
