@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 14:44:00 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/13 15:22:47 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/13 16:30:17 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,38 +45,69 @@ char	*ft_getpath(char **env)
 	return (path);
 }
 
-int	ft_process(char **av, char **env)
+int	ft_process(char **av, char **env, int n)
 {
 	char	*full_path;
 	char	*path;
 	char 	**arr;
 	
-	(void)av[0];
 	full_path = ft_getpath(env);
-	arr = ft_split(av[2], ' ');
+	arr = ft_split(av[n], ' ');
 	path = check_access(&full_path[5], arr[0]);
-	printf("path = %s\n", path);
+	//printf("path = %s\n", path);
 	//char* 	arr[] = {path, NULL};
 	//printf("1 = %s\n2 = %s\n", arr[0], arr[1]);
 	execve(path, arr, env);
-
 	return (1);
 }
 
 int	main(int ac, char **av, char **env)
 {
-	int		fd_in;
-	int		fd_out;
-	
-	if (ac == 1)
+	int fd[2];
+	int pid1;
+	int pid2;
+
+	printf("\n\n");
+	ac = 4;
+	if (pipe(fd) == -1)
+		return (-1);
+	//fd_out = open(av[4], O_WRONLY);
+	pid1 = fork();
+	if (pid1 < 0)
+		return (-1);
+	if (pid1 == 0)
 	{
-		printf("No arguments");
-		return (0);
+		fd[0] = open(av[1], O_RDONLY);
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+		ft_process(av, env, 2);
 	}
-	fd_in = open(av[1], O_RDONLY);
-	fd_out = open(av[4], O_WRONLY);
-	dup2(fd_in, 0);
-	close(fd_in);
-	ft_process(av, env);
+	pid2 = fork();
+	if (pid2 < 0)
+		return (-1);
+	if (pid2 == 0)
+	{
+
+		dup2(fd[0], STDIN_FILENO);
+		//fd[1] = open(av[4], O_WRONLY);
+		//dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		ft_process(av, env, 3);
+	}
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(pid1, NULL, 0);
+	waitpid(pid2, NULL, 0);
 	return (0);
 }
+
+
+
+
+		//char buf[100];
+		//int ret = read(fd[0], &buf, 100);
+		//buf[ret] = '\0';
+		//printf("buf = |%s|\n", buf);
