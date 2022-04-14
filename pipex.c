@@ -6,12 +6,12 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 14:44:00 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/14 15:11:22 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/14 16:25:10 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-/*
+
 int	first_process(char **av, char **env, int *fd)
 {
 	fd[0] = open(av[1], O_RDONLY);
@@ -19,7 +19,7 @@ int	first_process(char **av, char **env, int *fd)
 	close(fd[0]);	
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
-	ft_process(av, env, 2);
+	ft_process(av[2], env);
 	return (1);
 }
 
@@ -31,10 +31,10 @@ int	last_process(char **av, char **env, int *fd)
 	int	fd_out = open(av[4], O_WRONLY | O_TRUNC);
 	dup2(fd_out, STDOUT_FILENO);
 	close(fd_out);
-	ft_process(av, env, 3);
+	ft_process(av[2], env);
 	return (1);
 }
-
+/*
 int middle_process(char **av, char **env, int *fd)
 {
 
@@ -51,21 +51,29 @@ int	forking(int n, char **av, char **env, int ac)
 	fd_in = 0;
 	while (i < n)
 	{
-		if (av[0] == NULL && env[0] == NULL)
-			return (0);
 		pipe(fd);
 		pid = fork();
 		if (pid == -1)
 			return (-1);
 		if (pid == 0)
 		{
-			dup2(fd_in, STDIN_FILENO);
-			if (i + 1 != n)
-				dup2(fd[1], STDOUT_FILENO);
-			else
+			if (i == 2 && i + 1 != n)
 			{
+				fd[0] = open(av[1], O_RDONLY);
+				dup2(fd[0], STDIN_FILENO);
+				dup2(fd[1], STDOUT_FILENO);
+				close(fd[1]);
+			}	
+			else if (i + 1 == n)
+			{
+				dup2(fd_in, STDIN_FILENO);
 				int	fd_out = open(av[ac - 1], O_WRONLY | O_TRUNC);
 				dup2(fd_out, STDOUT_FILENO);
+			}
+			else
+			{
+				dup2(fd_in, STDIN_FILENO);
+				dup2(fd[1], STDOUT_FILENO);
 			}
 			close(fd[0]);
 			ft_process(av[i], env);
