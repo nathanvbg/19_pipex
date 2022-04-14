@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 17:37:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/13 17:38:50 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/14 14:38:56 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ft_getpath(char **env)
 	return (ft_exit("error, no full_path"));
 }
 
-int	ft_process(char **av, char **env, int n)
+int	ft_process(char *av, char **env)
 {
 	char	*full_path;
 	char	*path;
@@ -63,7 +63,7 @@ int	ft_process(char **av, char **env, int n)
 	full_path = ft_getpath(env);
 	if (!full_path)
 		return (-1);
-	arr = ft_split(av[n], ' ');
+	arr = ft_split(av, ' ');
 	if (!arr)
 		return (-1);
 	path = check_access(&full_path[5], arr[0]);
