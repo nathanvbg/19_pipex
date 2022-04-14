@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 14:44:00 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/14 15:03:26 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/14 15:11:22 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int middle_process(char **av, char **env, int *fd)
 
 }
 */
-int	forking(int n, char **av, char **env)
+int	forking(int n, char **av, char **env, int ac)
 {
 	int fd[2];
 	int pid;
@@ -59,18 +59,20 @@ int	forking(int n, char **av, char **env)
 			return (-1);
 		if (pid == 0)
 		{
-			printf("hello\n");
 			dup2(fd_in, STDIN_FILENO);
 			if (i + 1 != n)
 				dup2(fd[1], STDOUT_FILENO);
+			else
+			{
+				int	fd_out = open(av[ac - 1], O_WRONLY | O_TRUNC);
+				dup2(fd_out, STDOUT_FILENO);
+			}
 			close(fd[0]);
 			ft_process(av[i], env);
-			//execlp(av[i], av[i] , NULL);
 			exit(EXIT_FAILURE);
 		}
 		else
 		{
-			printf("non\n");
 			wait(NULL);
 			close(fd[1]);
 			fd_in = fd[0];
@@ -79,6 +81,15 @@ int	forking(int n, char **av, char **env)
 	}
 	return (1);
 }
+
+int	main(int ac, char **av, char **env)
+{
+	forking(ac - 1, av, env, ac);
+	ac = 4;
+
+	return (0);
+}
+
 /*
 	if (pipe(fd) == -1)
 		return (-1);
@@ -101,13 +112,6 @@ int	forking(int n, char **av, char **env)
 	return (1);
 }
 */
-int	main(int ac, char **av, char **env)
-{
-	forking(ac - 1, av, env);
-	ac = 4;
-
-	return (0);
-}
 
 /*
 
