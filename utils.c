@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 17:48:35 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/13 17:38:48 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/19 13:34:58 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_putstr(char *str)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		write(1, &str[1], 1);
 		i++;
