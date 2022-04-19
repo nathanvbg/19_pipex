@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 17:41:42 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/19 14:47:59 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/19 15:52:53 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,5 @@ void	ft_free(char *str);
 int		ft_exec(char *av, char **env);
 char	*ft_getpath(char **env);
 char	*check_access(char *full_path, char *cmd);
-
 
 #endif

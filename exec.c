@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 17:37:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/19 14:51:16 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/19 15:49:41 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ char	*check_access(char *full_path, char *cmd)
 	{
 		path = ft_strjoin_pipex(&full_path[i], "/");
 		if (!path)
-			return (ft_exit("error"));
+			return (NULL);
 		i += ft_strlen(path);
 		path = ft_strjoin_pipex(path, cmd);
 		if (!path)
-			return (ft_exit("error"));
+			return (NULL);
 		if (access(path, 0) == 0)
 			return (path);
 	}
-	return (ft_exit("no path"));
+	return (NULL);
 }
 
 char	*ft_getpath(char **env)
@@ -46,12 +46,12 @@ char	*ft_getpath(char **env)
 		{
 			path = ft_strdup(env[i]);
 			if (!path)
-				return (ft_exit("Allocation error"));
+				return (NULL);
 			return (path);
 		}
 		i++;
 	}
-	return (ft_exit("error, no full_path"));
+	return (NULL);
 }
 
 int	ft_exec(char *av, char **env)
@@ -67,15 +67,11 @@ int	ft_exec(char *av, char **env)
 		return (-1);
 	arr = ft_split(av, ' ');
 	if (!arr)
-		return (-1);//ft_exit(full_path));
-	path = check_access(&full_path[5], arr[0]);
-	//ft_free(full_path, arr);
-	if (!path)
-	{
 		return (-1);
-	}
-	printf("\n000\n");
+	path = check_access(&full_path[5], arr[0]);
+	free(full_path);
+	if (!path)
+		return (-1);
 	execve(path, arr, env);
-	printf("\n111\n");
 	return (1);
 }

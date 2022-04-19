@@ -6,7 +6,7 @@
 /*   By: naverbru <naverbru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 14:44:00 by naverbru          #+#    #+#             */
-/*   Updated: 2022/04/19 14:44:49 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/04/19 15:15:59 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	forking(int n, char **av, char **env)
 		if (pipe(x.fd) == -1)
 			return (-1);
 		x.pid = fork();
-		if (x.pid == -1)
+		if (x.pid < 0)
 			return (-1);
 		if (x.pid == 0)
 		{
